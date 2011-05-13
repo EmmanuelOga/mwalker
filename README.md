@@ -1,5 +1,5 @@
 <p align="center">
-![Moonwalker](http://www.emmanueloga.com/mwalker/doc/moonwalker.png "Moonwalker")
+  <img src="http://www.emmanueloga.com/mwalker/doc/moonwalker.png" alt="Moonwalker" title="Moonwalker" />
 </p>
 
 # Moonwalker

@@ -1,5 +1,5 @@
 <p align="center">
-![Moonwalker](http://github.com/EmmanuelOga/mwalker/doc/mwalker.png "Moonwalker")
+![Moonwalker](http://EmmanuelOga.github.com/mwalker/doc/mwalker.png "Moonwalker")
 </p>
 
 # Moonwalker
@@ -16,7 +16,7 @@ don't have a tree of your files but a list of opened files, for example.
 
 Please check [1][`mwalker(1)`] to find the modes of operation.
 
-[1]: http://github.com/EmmanuelOga/mwalker/doc/mwalker.1.html
+[1]: http://EmmanuelOga.github.com/mwalker/doc/mwalker.1.html
 
 ## EXAMPLES
 

@@ -1,0 +1,93 @@
+mwalker(1) -- walk your file system and perform matches against subsequences
+============================================================================
+
+## SYNOPSIS
+
+`mwalker config` [<path>]<br/>
+`mwalker index` [<path>]<br/>
+`mwalker filter` <path> [-limit=N] [-mode=<f|d|a>] [pattern]<br/>
+
+## DESCRIPTION
+
+**Moonwalker** walks your path tree looking for files matching a given
+subsequence. A subsequence is the string you are looking for where any
+number of letters has been removed.
+
+E.G.: "hlo" is a subsequence of "hello".
+
+In a second mode of operation **Moonwalker** can also filter lines from
+standard input according to a subsequence. This can be helpful if you
+don't have a tree of your files but a list of opened files, for example.
+
+## OPTIONS
+
+  * `config` [<path>]:
+    Writes a configuration file for generating an index for the given
+    path. The path defaults to current directory if not given.
+
+    The configuration file is a lua script which can be used to filter
+    out files and directories that you don't want indexed. The default
+    configuration file skips directories like `.git/` and `.svn/`, and
+    filters out files like `*.bak`, `*.tmp`, etc...
+
+    Also, by default **Moonwalker** won't index directories with more
+    than `1024 files` (under the asumption that that's too big to
+    contain source files) or recurse more than `16` levels.
+
+  * `index` [<path>]:
+    Writes an index of contents of directories under the given path. The
+    path defaults to the current directory.
+
+    As an implementation detail, the index file happens to be a lua
+    script which returns a table representing the tree structure.
+
+  * `filter` <path> [-limit=N] [-mode=<f|d|a>] [pattern]:
+    Loads the index or generates one on the fly, and returns the entries
+    matching the given subsequence.
+
+    If the path is -, it will filter the entries coming from the
+    standard input instead of building or loading a an index of files.
+
+    Mode only applies when not reading from stdin. It controls whether
+    the subsequence can match only files (default), only directories, or
+    both.
+
+## EXAMPLES
+
+Write a .mwalker configuration file to the current directory:
+
+    $ cd ~/projects/myproject
+    $ `mwalker config`
+
+Write a .mwalkerdb index file to a given directory:
+
+    $ mwalker index ~/projects/myproject
+
+Filter files from a project directory:
+
+    $ cd ~/projects/myproject
+    $ mwalker filter . -limit=20 -mode=f pattern
+
+Note that this works regardless of if you created an index previously or
+not. Indexes can speed up queries a lot but are not strictly equired.
+
+Filter lines coming from the standard input:
+
+    $ echo -e "line 1\nline2\nline3" | mwalker filter - -limit=1 2
+
+Note the -mode flag has no effect when working with the standard input.
+
+## BUILDING
+
+**Moonwalker** is written in lua and ships with a custom C extension.
+The main loader is a bash script that should take care of starting the
+program. To build the lua C module you'll need to change to the root
+directory of **Moonwalker** and run `make`.
+
+## COPYRIGHT
+
+Moonwalker is Copyright (C) 2011 Emmanuel Oga <http://EmmanuelOga.com>
+
+## SEE ALSO
+
+lua(1)

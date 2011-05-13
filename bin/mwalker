@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+abspath="$(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")"
+dirname=`dirname $abspath`
+
+export LUA_PATH="$dirname/../util/?.lua;$dirname/../lib/mwalker/?.lua;$dirname/../bench/?.lua;;"
+export LUA_CPATH="$dirname/../src/?.so;;"
+
+lua "$dirname/../lib/mwalker/runner.lua" "$@"

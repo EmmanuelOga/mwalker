@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <meta name='generator' value='Ronn/v0.7.3 (http://github.com/rtomayko/ronn/tree/0.7.3)'>
+  <title>mwalker(1) - walk your file system and perform matches against subsequences</title>
+  <style type='text/css' media='all'>
+  /* style: man */
+  body#manpage {margin:0}
+  .mp {max-width:100ex;padding:0 9ex 1ex 4ex}
+  .mp p,.mp pre,.mp ul,.mp ol,.mp dl {margin:0 0 20px 0}
+  .mp h2 {margin:10px 0 0 0}
+  .mp > p,.mp > pre,.mp > ul,.mp > ol,.mp > dl {margin-left:8ex}
+  .mp h3 {margin:0 0 0 4ex}
+  .mp dt {margin:0;clear:left}
+  .mp dt.flush {float:left;width:8ex}
+  .mp dd {margin:0 0 0 9ex}
+  .mp h1,.mp h2,.mp h3,.mp h4 {clear:left}
+  .mp pre {margin-bottom:20px}
+  .mp pre+h2,.mp pre+h3 {margin-top:22px}
+  .mp h2+pre,.mp h3+pre {margin-top:5px}
+  .mp img {display:block;margin:auto}
+  .mp h1.man-title {display:none}
+  .mp,.mp code,.mp pre,.mp tt,.mp kbd,.mp samp,.mp h3,.mp h4 {font-family:monospace;font-size:14px;line-height:1.42857142857143}
+  .mp h2 {font-size:16px;line-height:1.25}
+  .mp h1 {font-size:20px;line-height:2}
+  .mp {text-align:justify;background:#fff}
+  .mp,.mp code,.mp pre,.mp pre code,.mp tt,.mp kbd,.mp samp {color:#131211}
+  .mp h1,.mp h2,.mp h3,.mp h4 {color:#030201}
+  .mp u {text-decoration:underline}
+  .mp code,.mp strong,.mp b {font-weight:bold;color:#131211}
+  .mp em,.mp var {font-style:italic;color:#232221;text-decoration:none}
+  .mp a,.mp a:link,.mp a:hover,.mp a code,.mp a pre,.mp a tt,.mp a kbd,.mp a samp {color:#0000ff}
+  .mp b.man-ref {font-weight:normal;color:#434241}
+  .mp pre {padding:0 4ex}
+  .mp pre code {font-weight:normal;color:#434241}
+  .mp h2+pre,h3+pre {padding-left:0}
+  ol.man-decor,ol.man-decor li {margin:3px 0 10px 0;padding:0;float:left;width:33%;list-style-type:none;text-transform:uppercase;color:#999;letter-spacing:1px}
+  ol.man-decor {width:100%}
+  ol.man-decor li.tl {text-align:left}
+  ol.man-decor li.tc {text-align:center;letter-spacing:4px}
+  ol.man-decor li.tr {text-align:right;float:right}
+  </style>
+  <style type='text/css' media='all'>
+  /* style: toc */
+  .man-navigation {display:block !important;position:fixed;top:0;left:113ex;height:100%;width:100%;padding:48px 0 0 0;border-left:1px solid #dbdbdb;background:#eee}
+  .man-navigation a,.man-navigation a:hover,.man-navigation a:link,.man-navigation a:visited {display:block;margin:0;padding:5px 2px 5px 30px;color:#999;text-decoration:none}
+  .man-navigation a:hover {color:#111;text-decoration:underline}
+  </style>
+</head>
+<!--
+  The following styles are deprecated and will be removed at some point:
+  div#man, div#man ol.man, div#man ol.head, div#man ol.man.
+
+  The .man-page, .man-decor, .man-head, .man-foot, .man-title, and
+  .man-navigation should be used instead.
+-->
+<body id='manpage'>
+  <div class='mp' id='man'>
+
+  <div class='man-navigation' style='display:none'>
+    <a href="#NAME">NAME</a>
+    <a href="#SYNOPSIS">SYNOPSIS</a>
+    <a href="#DESCRIPTION">DESCRIPTION</a>
+    <a href="#OPTIONS">OPTIONS</a>
+    <a href="#EXAMPLES">EXAMPLES</a>
+    <a href="#BUILDING">BUILDING</a>
+    <a href="#COPYRIGHT">COPYRIGHT</a>
+    <a href="#SEE-ALSO">SEE ALSO</a>
+  </div>
+
+  <ol class='man-decor man-head man head'>
+    <li class='tl'>mwalker(1)</li>
+    <li class='tc'></li>
+    <li class='tr'>mwalker(1)</li>
+  </ol>
+
+  <h2 id="NAME">NAME</h2>
+<p class="man-name">
+  <code>mwalker</code> - <span class="man-whatis">walk your file system and perform matches against subsequences</span>
+</p>
+
+<h2 id="SYNOPSIS">SYNOPSIS</h2>
+
+<p><code>mwalker config</code> [<var>path</var>]<br />
+<code>mwalker index</code> [<var>path</var>]<br />
+<code>mwalker filter</code> <var>path</var> [-limit=N] [-mode=<var>f|d|a</var>] [pattern]<br /></p>
+
+<h2 id="DESCRIPTION">DESCRIPTION</h2>
+
+<p><strong>Moonwalker</strong> walks your path tree looking for files matching a given
+subsequence. A subsequence is the string you are looking for where any
+number of letters has been removed.</p>
+
+<p>E.G.: "hlo" is a subsequence of "hello".</p>
+
+<p>In a second mode of operation <strong>Moonwalker</strong> can also filter lines from
+standard input according to a subsequence. This can be helpful if you
+don't have a tree of your files but a list of opened files, for example.</p>
+
+<h2 id="OPTIONS">OPTIONS</h2>
+
+<dl>
+<dt><code>config</code> [<var>path</var>]</dt><dd><p>Writes a configuration file for generating an index for the given
+path. The path defaults to current directory if not given.</p>
+
+<p>The configuration file is a lua script which can be used to filter
+out files and directories that you don't want indexed. The default
+configuration file skips directories like <code>.git/</code> and <code>.svn/</code>, and
+filters out files like <code>*.bak</code>, <code>*.tmp</code>, etc...</p>
+
+<p>Also, by default <strong>Moonwalker</strong> won't index directories with more
+than <code>1024 files</code> (under the asumption that that's too big to
+contain source files) or recurse more than <code>16</code> levels.</p></dd>
+<dt><code>index</code> [<var>path</var>]</dt><dd><p>Writes an index of contents of directories under the given path. The
+path defaults to the current directory.</p>
+
+<p>As an implementation detail, the index file happens to be a lua
+script which returns a table representing the tree structure.</p></dd>
+<dt><code>filter</code> <var>path</var> [-limit=N] [-mode=<var>f|d|a</var>] [pattern]</dt><dd><p>Loads the index or generates one on the fly, and returns the entries
+matching the given subsequence.</p>
+
+<p>If the path is -, it will filter the entries coming from the
+standard input instead of building or loading a an index of files.</p>
+
+<p>Mode only applies when not reading from stdin. It controls whether
+the subsequence can match only files (default), only directories, or
+both.</p></dd>
+</dl>
+
+
+<h2 id="EXAMPLES">EXAMPLES</h2>
+
+<p>Write a .mwalker configuration file to the current directory:</p>
+
+<pre><code>$ cd ~/projects/myproject
+$ `mwalker config`
+</code></pre>
+
+<p>Write a .mwalkerdb index file to a given directory:</p>
+
+<pre><code>$ mwalker index ~/projects/myproject
+</code></pre>
+
+<p>Filter files from a project directory:</p>
+
+<pre><code>$ cd ~/projects/myproject
+$ mwalker filter . -limit=20 -mode=f pattern
+</code></pre>
+
+<p>Note that this works regardless of if you created an index previously or
+not. Indexes can speed up queries a lot but are not strictly equired.</p>
+
+<p>Filter lines coming from the standard input:</p>
+
+<pre><code>$ echo -e "line 1\nline2\nline3" | mwalker filter - -limit=1 2
+</code></pre>
+
+<p>Note the -mode flag has no effect when working with the standard input.</p>
+
+<h2 id="BUILDING">BUILDING</h2>
+
+<p><strong>Moonwalker</strong> is written in lua and ships with a custom C extension.
+The main loader is a bash script that should take care of starting the
+program. To build the lua C module you'll need to change to the root
+directory of <strong>Moonwalker</strong> and run <code>make</code>.</p>
+
+<h2 id="COPYRIGHT">COPYRIGHT</h2>
+
+<p>Moonwalker is Copyright (C) 2011 Emmanuel Oga <a href="http://EmmanuelOga.com" data-bare-link="true">http://EmmanuelOga.com</a></p>
+
+<h2 id="SEE-ALSO">SEE ALSO</h2>
+
+<p><span class="man-ref">lua<span class="s">(1)</span></span></p>
+
+
+  <ol class='man-decor man-foot man foot'>
+    <li class='tl'></li>
+    <li class='tc'>May 2011</li>
+    <li class='tr'>mwalker(1)</li>
+  </ol>
+
+  </div>
+</body>
+</html>

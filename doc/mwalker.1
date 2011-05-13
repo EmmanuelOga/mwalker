@@ -1,0 +1,125 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "MWALKER" "1" "May 2011" "" ""
+.
+.SH "NAME"
+\fBmwalker\fR \- walk your file system and perform matches against subsequences
+.
+.SH "SYNOPSIS"
+\fBmwalker config\fR [\fIpath\fR]
+.
+.br
+\fBmwalker index\fR [\fIpath\fR]
+.
+.br
+\fBmwalker filter\fR \fIpath\fR [\-limit=N] [\-mode=\fIf|d|a\fR] [pattern]
+.
+.br
+.
+.SH "DESCRIPTION"
+\fBMoonwalker\fR walks your path tree looking for files matching a given subsequence\. A subsequence is the string you are looking for where any number of letters has been removed\.
+.
+.P
+E\.G\.: "hlo" is a subsequence of "hello"\.
+.
+.P
+In a second mode of operation \fBMoonwalker\fR can also filter lines from standard input according to a subsequence\. This can be helpful if you don\'t have a tree of your files but a list of opened files, for example\.
+.
+.SH "OPTIONS"
+.
+.TP
+\fBconfig\fR [\fIpath\fR]
+Writes a configuration file for generating an index for the given path\. The path defaults to current directory if not given\.
+.
+.IP
+The configuration file is a lua script which can be used to filter out files and directories that you don\'t want indexed\. The default configuration file skips directories like \fB\.git/\fR and \fB\.svn/\fR, and filters out files like \fB*\.bak\fR, \fB*\.tmp\fR, etc\.\.\.
+.
+.IP
+Also, by default \fBMoonwalker\fR won\'t index directories with more than \fB1024 files\fR (under the asumption that that\'s too big to contain source files) or recurse more than \fB16\fR levels\.
+.
+.TP
+\fBindex\fR [\fIpath\fR]
+Writes an index of contents of directories under the given path\. The path defaults to the current directory\.
+.
+.IP
+As an implementation detail, the index file happens to be a lua script which returns a table representing the tree structure\.
+.
+.TP
+\fBfilter\fR \fIpath\fR [\-limit=N] [\-mode=\fIf|d|a\fR] [pattern]
+Loads the index or generates one on the fly, and returns the entries matching the given subsequence\.
+.
+.IP
+If the path is \-, it will filter the entries coming from the standard input instead of building or loading a an index of files\.
+.
+.IP
+Mode only applies when not reading from stdin\. It controls whether the subsequence can match only files (default), only directories, or both\.
+.
+.SH "EXAMPLES"
+Write a \.mwalker configuration file to the current directory:
+.
+.IP "" 4
+.
+.nf
+
+$ cd ~/projects/myproject
+$ `mwalker config`
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Write a \.mwalkerdb index file to a given directory:
+.
+.IP "" 4
+.
+.nf
+
+$ mwalker index ~/projects/myproject
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Filter files from a project directory:
+.
+.IP "" 4
+.
+.nf
+
+$ cd ~/projects/myproject
+$ mwalker filter \. \-limit=20 \-mode=f pattern
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Note that this works regardless of if you created an index previously or not\. Indexes can speed up queries a lot but are not strictly equired\.
+.
+.P
+Filter lines coming from the standard input:
+.
+.IP "" 4
+.
+.nf
+
+$ echo \-e "line 1\enline2\enline3" | mwalker filter \- \-limit=1 2
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Note the \-mode flag has no effect when working with the standard input\.
+.
+.SH "BUILDING"
+\fBMoonwalker\fR is written in lua and ships with a custom C extension\. The main loader is a bash script that should take care of starting the program\. To build the lua C module you\'ll need to change to the root directory of \fBMoonwalker\fR and run \fBmake\fR\.
+.
+.SH "COPYRIGHT"
+Moonwalker is Copyright (C) 2011 Emmanuel Oga \fIhttp://EmmanuelOga\.com\fR
+.
+.SH "SEE ALSO"
+lua(1)

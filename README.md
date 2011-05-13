@@ -1,5 +1,5 @@
 <p align="center">
-![Moonwalker](http://EmmanuelOga.github.com/mwalker/doc/mwalker.png "Moonwalker")
+![Moonwalker](http://www.emmanueloga.com/mwalker/doc/moonwalker.png "Moonwalker")
 </p>
 
 # Moonwalker
@@ -14,9 +14,9 @@ In a second mode of operation **Moonwalker** can also filter lines from
 standard input according to a subsequence. This can be helpful if you
 don't have a tree of your files but a list of opened files, for example.
 
-Please check [1][`mwalker(1)`] to find the modes of operation.
+Please check [`mwalker(1)`][1] to find the modes of operation.
 
-[1]: http://EmmanuelOga.github.com/mwalker/doc/mwalker.1.html
+[1]: http://www.emmanueloga.com/mwalker/doc/mwalker.1.html
 
 ## EXAMPLES
 
